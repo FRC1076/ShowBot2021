@@ -28,7 +28,7 @@ class MyRobot(wpilib.TimedRobot):
         elif self.controller.getTriggerAxis(self.left_hand) > 0.95:
             self.running = -0.2
         else:
-            self.running = 0
+            self.running = 0 
 
         if self.controller.getAButton():
             self.shooter_mod = 0.2
