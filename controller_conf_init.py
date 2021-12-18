@@ -1,8 +1,5 @@
 from wpilib.interfaces import GenericHID
 
-CONTROLLER_PORT = 0
-my_controller = GenericHID(CONTROLLER_PORT)
-
 
 def get_pressed_button_num(controller):
     while True:
@@ -52,6 +49,9 @@ def write_config(controller_map):
 
 
 if __name__ == "__main__":
+    CONTROLLER_PORT = 0
+
+    my_controller = GenericHID(CONTROLLER_PORT)
     mappings = find_mapping(my_controller)
     print(mappings)
     if input("Do you want to write this mapping into controller_conf.py? [y/n]") == 'y':
