@@ -6,7 +6,7 @@ my_controller = GenericHID(CONTROLLER_PORT)
 
 def get_pressed_button_num(controller):
     while True:
-        for i in range(1, controller.getButtonCount + 1):
+        for i in range(1, controller.getButtonCount() + 1):
             if controller.getRawButton(i):
                 print(f"Button {i} pressed")
                 return i
@@ -14,7 +14,7 @@ def get_pressed_button_num(controller):
 
 def get_held_axis_num(controller):
     while True:
-        for i in range(1, controller.getAxisCount):
+        for i in range(1, controllers.getAxisCount()):
             if controller.getRawAxis(i) > 0.9:
                 print(f"Axis {i} pressed")
                 return i
