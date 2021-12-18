@@ -14,7 +14,7 @@ def get_pressed_button_num(controller):
 
 def get_held_axis_num(controller):
     while True:
-        for i in range(1, controllers.getAxisCount()):
+        for i in range(controller.getAxisCount()):
             if controller.getRawAxis(i) > 0.9:
                 print(f"Axis {i} pressed")
                 return i
