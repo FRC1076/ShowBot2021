@@ -1,5 +1,9 @@
 import wpilib
 
 
-class Shooter(wpilib.Spark):
-    pass
+class Shooter:
+    def __init__(self, motor_controller):
+        self.motor = motor_controller
+
+    def set(self, speed):
+        self.motor.set(speed)
