@@ -10,12 +10,10 @@ class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
         SHOOTER_ID = 1 # The channel the Spark is on
         
-        controller = rev.CANSparkMax(SHOOTER_ID, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
-        self.shooter = Shooter(controller)
-        self.controller = wpilib.XboxController(0)
-        # self.right_hand = wpilib.interfaces.GenericHID.Hand.kRightHand
-        # self.left_hand = wpilib.interfaces.GenericHID.Hand.kLeftHand
-
+        shooter_controller = rev.CANSparkMax(SHOOTER_ID, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.shooter = Shooter(shooter_controller)
+        self.operator = wpilib.XboxController(0)
+        
         # Change these depending on the controller
         self.left_trigger_axis = 2 
         self.right_trigger_axis = 5
@@ -35,22 +33,22 @@ class MyRobot(wpilib.TimedRobot):
         x reduces the speed, y reduces the speed more, b reduces the speed even more, 
         a reduces the speed the most
         """
-        if self.controller.getRawAxis(self.right_trigger_axis) > 0.95:
+        if self.operator.getRawAxis(self.right_trigger_axis) > 0.95:
             print("got trigger")
             self.running = 1
-        elif self.controller.getRawAxis(self.left_trigger_axis) > 0.95:
+        elif self.operator.getRawAxis(self.left_trigger_axis) > 0.95:
             self.running = -0.2
         else:
             self.running = 0 
 
-        if self.controller.getAButton():
+        if self.operator.getAButton():
             print("got A button!")
             self.shooter_mod = 0.2
-        elif self.controller.getBButton():
+        elif self.operator.getBButton():
             self.shooter_mod = 0.4
-        elif self.controller.getYButton():
+        elif self.operator.getYButton():
             self.shooter_mod = 0.6
-        elif self.controller.getXButton():
+        elif self.operator.getXButton():
             self.shooter_mod = 0.8
         else:
             self.shooter_mod = 1
