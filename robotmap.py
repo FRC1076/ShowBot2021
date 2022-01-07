@@ -1,3 +1,5 @@
+deadzone = 0.2
+
 #Motor IDs
 LEFT_LEADER_ID = 8
 LEFT_MIDDLE_ID = 10
