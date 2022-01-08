@@ -5,6 +5,7 @@ import wpilib.drive
 from shooter import Shooter
 from wpilib import interfaces
 import rev
+import robotmap
 
 #Controller hands (sides)
 LEFT_HAND = wpilib._wpilib.XboxController.Hand.kLeftHand
@@ -13,26 +14,31 @@ RIGHT_HAND = wpilib._wpilib.XboxController.Hand.kRightHand
 class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
 
-        # Create both xbox controlers
-        self.driver = wpilib.XboxController(0)
-        self.operator = wpilib.XboxController(1)
+        #Create both xbox controlers
+        self.driver = wpilib.XboxController(1)
+        self.operator = wpilib.XboxController(0)
 
         # Motors
+        
         self.left_motor_1 = rev.CANSparkMax(robotmap.LEFT_LEADER_ID, rev.MotorType.kBrushed)
         self.left_motor_2 = rev.CANSparkMax(robotmap.LEFT_MIDDLE_ID, rev.MotorType.kBrushed)
         self.left_motor_3  = rev.CANSparkMax(robotmap.LEFT_FOLLOWER_ID, rev.MotorType.kBrushed)
         self.right_motor_1 = rev.CANSparkMax(robotmap.RIGHT_LEADER_ID, rev.MotorType.kBrushed)
         self.right_motor_2 = rev.CANSparkMax(robotmap.RIGHT_MIDDLE_ID, rev.MotorType.kBrushed)
         self.right_motor_3 = rev.CANSparkMax(robotmap.RIGHT_FOLLOWER_ID, rev.MotorType.kBrushed)
-        self.shooter = Shooter(rev.CANSparkMax(robotmap.SHOOTER_ID, rev.CANSparkMaxLowLevel.MotorType.kBrushless))
+        
 
+        shooter = rev.CANSparkMax(robotmap.SHOOTER_ID, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.shooter = Shooter(shooter)
+        
         self.left_motor_1.setClosedLoopRampRate(1.0)
         self.left_motor_2.setClosedLoopRampRate(1.0)
         self.left_motor_3.setClosedLoopRampRate(1.0)
         self.right_motor_1.setClosedLoopRampRate(1.0)
         self.right_motor_2.setClosedLoopRampRate(1.0)
         self.right_motor_3.setClosedLoopRampRate(1.0)
-        self.shooter.setClosedLoopRampRate(1.0)
+        
+        #self.shooter.setClosedLoopRampRate(1.0)
         
         self.left_side = wpilib.SpeedControllerGroup(self.left_motor_1, self.left_motor_2, self.left_motor_3)
         self.right_side = wpilib.SpeedControllerGroup(self.right_motor_1, self.right_motor_2, self.right_motor_3)
@@ -41,8 +47,8 @@ class MyRobot(wpilib.TimedRobot):
         self.drivetrain = wpilib.drive.DifferentialDrive(self.left_side, self.right_side)
 
 
-        # self.right_hand = wpilib.interfaces.GenericHID.Hand.kRightHand
-        # self.left_hand = wpilib.interfaces.GenericHID.Hand.kLeftHand
+        self.right_hand = wpilib.interfaces.GenericHID.Hand.kRightHand
+        self.left_hand = wpilib.interfaces.GenericHID.Hand.kLeftHand
 
         # Change these depending on the controller
         self.left_trigger_axis = 2 
@@ -88,14 +94,14 @@ class MyRobot(wpilib.TimedRobot):
         """
         Makes the drivetrain motor piars move
         """
-
+        '''
         forward = self.driver.getY(RIGHT_HAND) 
         #Right stick y-axis
         forward = 0.80 * deadzone(forward, robotmap.deadzone)
         rotation_value = -0.8 * self.driver.getX(LEFT_HAND)
         
         #if rotation_value > 0 or forward > 0:
-        self.drivetrain.arcadeDrive(forward, rotation_value)
+        self.drivetrain.arcadeDrive(forward, rotation_value)'''
 
 
     def autonomousInit(self):
