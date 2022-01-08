@@ -5,6 +5,7 @@ import wpilib.drive
 from shooter import Shooter
 from wpilib import interfaces
 import rev
+import robotmap
 
 #Controller hands (sides)
 LEFT_HAND = wpilib._wpilib.XboxController.Hand.kLeftHand
@@ -32,7 +33,7 @@ class MyRobot(wpilib.TimedRobot):
         self.right_motor_1.setClosedLoopRampRate(1.0)
         self.right_motor_2.setClosedLoopRampRate(1.0)
         self.right_motor_3.setClosedLoopRampRate(1.0)
-        self.shooter.setClosedLoopRampRate(1.0)
+        #self.shooter.setClosedLoopRampRate(1.0)
         
         self.left_side = wpilib.SpeedControllerGroup(self.left_motor_1, self.left_motor_2, self.left_motor_3)
         self.right_side = wpilib.SpeedControllerGroup(self.right_motor_1, self.right_motor_2, self.right_motor_3)
@@ -88,7 +89,7 @@ class MyRobot(wpilib.TimedRobot):
         """
         Makes the drivetrain motor piars move
         """
-
+        """
         forward = self.driver.getY(RIGHT_HAND) 
         #Right stick y-axis
         forward = 0.80 * deadzone(forward, robotmap.deadzone)
@@ -96,7 +97,7 @@ class MyRobot(wpilib.TimedRobot):
         
         #if rotation_value > 0 or forward > 0:
         self.drivetrain.arcadeDrive(forward, rotation_value)
-
+        """
 
     def autonomousInit(self):
         pass
