@@ -86,6 +86,18 @@ class MyRobot(wpilib.TimedRobot):
 
         self.shooter.set(self.running * self.shooter_mod)
 
+        #Get left and right joystick values.
+        
+        leftspeed = self.driver.getY(LEFT_HAND)
+        rightspeed = self.driver.getY(RIGHT_HAND)
+
+        #Invoke deadzone on speed.
+        leftspeed = 0.80 * deadzone(leftspeed, robotmap.deadzone)
+        rightspeed = 0.80 * deadzone(rightspeed, robotmap.deadzone)
+        
+        #Invoke Tank Drive
+        self.drivetrain.tankDrive(leftspeed, rightspeed)
+
         """
         Makes the drivetrain motor piars move
         """
