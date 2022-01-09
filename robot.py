@@ -14,6 +14,7 @@ RIGHT_HAND = wpilib._wpilib.XboxController.Hand.kRightHand
 #Drive Types
 ARCADE = 1
 TANK = 2
+SWERVE = 3
 
 class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
@@ -106,7 +107,7 @@ class MyRobot(wpilib.TimedRobot):
             self.drivetrain.tankDrive(leftspeed, rightspeed)
 
         #ARCADE DRIVE
-        if (self.drive == ARCADE):
+        elif (self.drive == ARCADE):
 
             #Get left (forward) joystick value
             forward = self.driver.getY(RIGHT_HAND) 
@@ -118,6 +119,9 @@ class MyRobot(wpilib.TimedRobot):
             #Invoke Arcade Drive
             self.drivetrain.arcadeDrive(forward, rotation_value)
 
+        else: #self.drive == SWERVE
+            #Panic
+            return
 
     def autonomousInit(self):
         pass
