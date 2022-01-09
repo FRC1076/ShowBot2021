@@ -11,6 +11,10 @@ import robotmap
 LEFT_HAND = wpilib._wpilib.XboxController.Hand.kLeftHand
 RIGHT_HAND = wpilib._wpilib.XboxController.Hand.kRightHand
 
+#Drive Types
+ARCADE = 1
+TANK = 2
+
 class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
 
@@ -40,7 +44,7 @@ class MyRobot(wpilib.TimedRobot):
         
         #Drivetrain
         self.drivetrain = wpilib.drive.DifferentialDrive(self.left_side, self.right_side)
-
+        self.drive = TANK
 
         # self.right_hand = wpilib.interfaces.GenericHID.Hand.kRightHand
         # self.left_hand = wpilib.interfaces.GenericHID.Hand.kLeftHand
@@ -86,30 +90,34 @@ class MyRobot(wpilib.TimedRobot):
 
         self.shooter.set(self.running * self.shooter_mod)
 
-        #Get left and right joystick values.
-        
-        leftspeed = self.driver.getY(LEFT_HAND)
-        rightspeed = self.driver.getY(RIGHT_HAND)
+        #TANK DRIVE
+        if (self.drive == TANK):
 
-        #Invoke deadzone on speed.
-        leftspeed = 0.80 * deadzone(leftspeed, robotmap.deadzone)
-        rightspeed = 0.80 * deadzone(rightspeed, robotmap.deadzone)
-        
-        #Invoke Tank Drive
-        self.drivetrain.tankDrive(leftspeed, rightspeed)
+            #Get left and right joystick values.
 
-        """
-        Makes the drivetrain motor piars move
-        """
-        """
-        forward = self.driver.getY(RIGHT_HAND) 
-        #Right stick y-axis
-        forward = 0.80 * deadzone(forward, robotmap.deadzone)
-        rotation_value = -0.8 * self.driver.getX(LEFT_HAND)
+            leftspeed = self.driver.getY(LEFT_HAND)
+            rightspeed = self.driver.getY(RIGHT_HAND)
+
+            #Invoke deadzone on speed.
+            leftspeed = 0.80 * deadzone(leftspeed, robotmap.deadzone)
+            rightspeed = 0.80 * deadzone(rightspeed, robotmap.deadzone)
         
-        #if rotation_value > 0 or forward > 0:
-        self.drivetrain.arcadeDrive(forward, rotation_value)
-        """
+            #Invoke Tank Drive
+            self.drivetrain.tankDrive(leftspeed, rightspeed)
+
+        #ARCADE DRIVE
+        if (self.drive == ARCADE):
+
+            #Get left (forward) joystick value
+            forward = self.driver.getY(RIGHT_HAND) 
+            forward = 0.80 * deadzone(forward, robotmap.deadzone)
+
+            #Get right (rotation) joystack Value
+            rotation_value = -0.8 * self.driver.getX(LEFT_HAND)
+        
+            #Invoke Arcade Drive
+            self.drivetrain.arcadeDrive(forward, rotation_value)
+
 
     def autonomousInit(self):
         pass
