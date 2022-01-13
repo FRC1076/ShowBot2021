@@ -11,12 +11,17 @@ import robotmap
 LEFT_HAND = wpilib._wpilib.XboxController.Hand.kLeftHand
 RIGHT_HAND = wpilib._wpilib.XboxController.Hand.kRightHand
 
+#Drive Types
+ARCADE = 1
+TANK = 2
+SWERVE = 3
+
 class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
 
         #Create both xbox controlers
-        self.driver = wpilib.XboxController(1)
-        self.operator = wpilib.XboxController(0)
+        self.driver = wpilib.XboxController(0)
+        self.operator = wpilib.XboxController(1)
 
         # Motors
         
@@ -37,7 +42,6 @@ class MyRobot(wpilib.TimedRobot):
         self.right_motor_1.setClosedLoopRampRate(1.0)
         self.right_motor_2.setClosedLoopRampRate(1.0)
         self.right_motor_3.setClosedLoopRampRate(1.0)
-        
         #self.shooter.setClosedLoopRampRate(1.0)
         
         self.left_side = wpilib.SpeedControllerGroup(self.left_motor_1, self.left_motor_2, self.left_motor_3)
@@ -45,7 +49,7 @@ class MyRobot(wpilib.TimedRobot):
         
         #Drivetrain
         self.drivetrain = wpilib.drive.DifferentialDrive(self.left_side, self.right_side)
-
+        self.drive = TANK
 
         self.right_hand = wpilib.interfaces.GenericHID.Hand.kRightHand
         self.left_hand = wpilib.interfaces.GenericHID.Hand.kLeftHand
@@ -64,6 +68,7 @@ class MyRobot(wpilib.TimedRobot):
         self.running = 0
 
     def teleopPeriodic(self):
+        #print("starting teleop periodic")
         """
         Makes the shooter motor spin. Right trigger -> 1, left trigger -> -0.2, 
         x reduces the speed, y reduces the speed more, b reduces the speed even more, 
@@ -91,18 +96,39 @@ class MyRobot(wpilib.TimedRobot):
 
         self.shooter.set(self.running * self.shooter_mod)
 
-        """
-        Makes the drivetrain motor piars move
-        """
-        '''
-        forward = self.driver.getY(RIGHT_HAND) 
-        #Right stick y-axis
-        forward = 0.80 * deadzone(forward, robotmap.deadzone)
-        rotation_value = -0.8 * self.driver.getX(LEFT_HAND)
-        
-        #if rotation_value > 0 or forward > 0:
-        self.drivetrain.arcadeDrive(forward, rotation_value)'''
+        #TANK DRIVE
+        if (self.drive == TANK):
 
+            #Get left and right joystick values.
+
+            leftspeed = self.driver.getY(LEFT_HAND)
+            rightspeed = self.driver.getY(RIGHT_HAND)
+            #leftspeed = 0.5
+            #rightspeed = 0.5
+            #Invoke deadzone on speed.
+            leftspeed = 0.80 * self.deadzone(leftspeed, robotmap.deadzone)
+            rightspeed = 0.80 * self.deadzone(rightspeed, robotmap.deadzone)
+            print("Right Speed: ", rightspeed)
+            print("Left Speed: ", leftspeed)
+            #Invoke Tank Drive
+            self.drivetrain.tankDrive(leftspeed, rightspeed)
+
+        #ARCADE DRIVE
+        elif (self.drive == ARCADE):
+
+            #Get left (forward) joystick value
+            forward = self.driver.getY(RIGHT_HAND) 
+            forward = 0.80 * self.deadzone(forward, robotmap.deadzone)
+
+            #Get right (rotation) joystack Value
+            rotation_value = -0.8 * self.driver.getX(LEFT_HAND)
+        
+            #Invoke Arcade Drive
+            self.drivetrain.arcadeDrive(forward, rotation_value)
+
+        else: #self.drive == SWERVE
+            #Panic
+            return
 
     def autonomousInit(self):
         pass
@@ -110,7 +136,7 @@ class MyRobot(wpilib.TimedRobot):
     def autonomousPeriodic(self):
         pass
 
-    def deadzone(val, deadzone): 
+    def deadzone(self, val, deadzone): 
         """
         Given the deadzone value x, the deadzone both eliminates all
         values between -x and x, and scales the remaining values from
