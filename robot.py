@@ -57,7 +57,6 @@ class MyRobot(wpilib.TimedRobot):
         # Change these depending on the controller
         self.left_trigger_axis = 2 
         self.right_trigger_axis = 5
-        print("running!")
 
 
     def robotPeriodic(self):
@@ -108,8 +107,7 @@ class MyRobot(wpilib.TimedRobot):
             #Invoke deadzone on speed.
             leftspeed = 0.80 * self.deadzone(leftspeed, robotmap.deadzone)
             rightspeed = 0.80 * self.deadzone(rightspeed, robotmap.deadzone)
-            print("Right Speed: ", rightspeed)
-            print("Left Speed: ", leftspeed)
+
             #Invoke Tank Drive
             self.drivetrain.tankDrive(leftspeed, rightspeed)
 
