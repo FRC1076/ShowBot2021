@@ -142,13 +142,13 @@ class MyRobot(wpilib.TimedRobot):
 
     def autonomousPeriodic(self):
 
-        #Checks if time since auton started exceeds 5 seconds
-        if autonomous_timer.get() > 5:
+        #Checks if time since auton started exceeds 2 seconds
+        if autonomous_timer.get() > 2:
             pass
 
         #Moves backwards
         else:
-            self.drivetrain.tankDrive(-0.8, -0.8,)
+            self.drivetrain.tankDrive(-0.2, -0.2)
 
     def deadzone(self, val, deadzone): 
         """
