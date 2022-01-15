@@ -7,6 +7,7 @@ from wpilib import interfaces
 import rev
 import robotmap
 
+
 #Controller hands (sides)
 LEFT_HAND = wpilib._wpilib.XboxController.Hand.kLeftHand
 RIGHT_HAND = wpilib._wpilib.XboxController.Hand.kRightHand
@@ -131,10 +132,23 @@ class MyRobot(wpilib.TimedRobot):
             return
 
     def autonomousInit(self):
-        pass
+
+        #Creates a timer that starts during auton
+        autonomous_timer = wpilib.Timer()
+
+        #Starts the timer
+        autonomous_timer.start()
+
 
     def autonomousPeriodic(self):
-        pass
+
+        #Checks if time since auton started exceeds 5 seconds
+        if autonomous_timer.get() > 5:
+            pass
+
+        #Moves backwards
+        else:
+            self.drivetrain.tankDrive(-0.8, -0.8,)
 
     def deadzone(self, val, deadzone): 
         """
