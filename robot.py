@@ -32,7 +32,6 @@ class MyRobot(wpilib.TimedRobot):
         self.right_motor_2 = rev.CANSparkMax(robotmap.RIGHT_MIDDLE_ID, rev.MotorType.kBrushed)
         self.right_motor_3 = rev.CANSparkMax(robotmap.RIGHT_FOLLOWER_ID, rev.MotorType.kBrushed)
         
-
         shooter = rev.CANSparkMax(robotmap.SHOOTER_ID, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
         self.shooter = Shooter(shooter)
         
@@ -102,6 +101,7 @@ class MyRobot(wpilib.TimedRobot):
 
             leftspeed = self.driver.getY(LEFT_HAND)
             rightspeed = self.driver.getY(RIGHT_HAND)
+            print(leftspeed, rightspeed)
             #leftspeed = 0.5
             #rightspeed = 0.5
             #Invoke deadzone on speed.

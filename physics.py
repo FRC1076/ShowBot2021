@@ -30,16 +30,9 @@ class PhysicsEngine:
 
         self.physics_controller = physics_controller
 
-        # self.left_motor_1 = rev.CANSparkMax(robotmap.LEFT_LEADER_ID, rev.MotorType.kBrushed)
-        # self.left_motor_2 = rev.CANSparkMax(robotmap.LEFT_MIDDLE_ID, rev.MotorType.kBrushed)
-        # self.left_motor_3  = rev.CANSparkMax(robotmap.LEFT_FOLLOWER_ID, rev.MotorType.kBrushed)
-        # self.right_motor_1 = rev.CANSparkMax(robotmap.RIGHT_LEADER_ID, rev.MotorType.kBrushed)
-        # self.right_motor_2 = rev.CANSparkMax(robotmap.RIGHT_MIDDLE_ID, rev.MotorType.kBrushed)
-        # self.right_motor_3 = rev.CANSparkMax(robotmap.RIGHT_FOLLOWER_ID, rev.MotorType.kBrushed)
-        
         # Motors
-        self.l_motor = wpilib.simulation.PWMSim(1)
-        self.r_motor = wpilib.simulation.PWMSim(2)
+        self.l_motor = wpilib.simulation.SimDeviceSim("LEFT", robotmap.RIGHT_MIDDLE_ID)
+        self.r_motor = wpilib.simulation.SimDeviceSim("RIGHT", robotmap.LEFT_MIDDLE_ID)
 
         self.dio1 = wpilib.simulation.DIOSim(1)
         self.dio2 = wpilib.simulation.DIOSim(2)
@@ -80,15 +73,15 @@ class PhysicsEngine:
         """
 
         # Simulate the drivetrain
-        left_motor_speed = self.l_motor.getSpeed()        
-        right_motor_speed = self.r_motor.getSpeed()
+        left_motor_speed = self.l_motor.getDouble("Velocity").get()       
+        right_motor_speed = self.r_motor.getDouble("Velocity").get()
 
-        print(left_motor_speed, right_motor_speed)
+        # print(left_motor_speed, right_motor_speed)
             
         transform = self.drivetrain.calculate(left_motor_speed, right_motor_speed, tm_diff)
         pose = self.physics_controller.move_robot(transform)
 
-        print(pose)
+        # print(pose)
 
         # update position (use tm_diff so the rate is constant)
         self.position += self.motor.getSpeed() * tm_diff * 3
